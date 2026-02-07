@@ -1,0 +1,1 @@
+export { useUpdateProductMutation } from './useUpdateProductMutation';

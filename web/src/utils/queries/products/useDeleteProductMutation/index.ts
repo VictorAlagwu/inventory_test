@@ -1,0 +1,1 @@
+export { useDeleteProductMutation } from './useDeleteProductMutation';

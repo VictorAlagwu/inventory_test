@@ -1,0 +1,1 @@
+export { useStoreQuery } from './useStoreQuery';

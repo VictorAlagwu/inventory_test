@@ -1,0 +1,31 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Build output
+dist
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Misc
+.DS_Store
+*.log

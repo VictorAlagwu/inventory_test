@@ -1,0 +1,1 @@
+export { useDeleteStoreMutation } from './useDeleteStoreMutation';

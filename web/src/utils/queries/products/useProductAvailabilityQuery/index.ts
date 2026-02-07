@@ -1,0 +1,1 @@
+export { useProductAvailabilityQuery } from './useProductAvailabilityQuery';

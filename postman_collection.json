@@ -1,0 +1,316 @@
+{
+  "info": {
+    "name": "Inventory Management API",
+    "description": "REST API for managing stores, products, and store-product inventory associations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "storeId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Returns server health status with a timestamp."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products?page=1&limit=10&sortBy=name&sortOrder=asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "page", "value": "1", "description": "Page number (default: 1)" },
+                { "key": "limit", "value": "10", "description": "Items per page (default: 10, max: 100)" },
+                { "key": "sortBy", "value": "name", "description": "Sort field: name | price | categoryId | createdAt" },
+                { "key": "sortOrder", "value": "asc", "description": "Sort direction: asc | desc" },
+                { "key": "categoryId", "value": "", "description": "Filter by category ID", "disabled": true },
+                { "key": "minPrice", "value": "", "description": "Minimum price filter", "disabled": true },
+                { "key": "maxPrice", "value": "", "description": "Maximum price filter", "disabled": true },
+                { "key": "storeId", "value": "", "description": "Filter by store ID", "disabled": true }
+              ]
+            },
+            "description": "Returns paginated list of products with optional filtering and sorting."
+          }
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
+            },
+            "description": "Returns a single product by its ID, including its category."
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Wireless Mouse\",\n  \"description\": \"Ergonomic wireless mouse with USB receiver\",\n  \"categoryId\": 1,\n  \"price\": 29.99\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            },
+            "description": "Creates a new product.\n\nRequired fields:\n- name (string, 1-200 chars)\n- categoryId (positive integer)\n- price (positive number, max 999999.99)\n\nOptional fields:\n- description (string, max 1000 chars)"
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Wireless Mouse Pro\",\n  \"price\": 39.99\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
+            },
+            "description": "Updates an existing product. At least one field must be provided.\n\nOptional fields:\n- name (string, 1-200 chars)\n- description (string, max 1000 chars)\n- categoryId (positive integer)\n- price (positive number, max 999999.99)"
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}"]
+            },
+            "description": "Deletes a product by ID. Also removes all store-product associations."
+          }
+        },
+        {
+          "name": "Get Product Availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{productId}}/availability",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{productId}}", "availability"]
+            },
+            "description": "Returns product details along with availability across all stores (store name, location, quantity in stock). Non-trivial aggregation endpoint."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Stores",
+      "item": [
+        {
+          "name": "Get All Stores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stores",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores"],
+              "query": [
+                { "key": "name", "value": "", "description": "Filter stores by name (partial match)", "disabled": true }
+              ]
+            },
+            "description": "Returns all stores with optional name filter."
+          }
+        },
+        {
+          "name": "Get Store by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}"]
+            },
+            "description": "Returns a single store by its ID."
+          }
+        },
+        {
+          "name": "Create Store",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Downtown Store\",\n  \"location\": \"123 Main St, City\",\n  \"description\": \"Flagship store in the city center\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stores",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores"]
+            },
+            "description": "Creates a new store.\n\nRequired fields:\n- name (string, 1-100 chars, must be unique)\n\nOptional fields:\n- location (string, max 200 chars)\n- description (string, max 500 chars)"
+          }
+        },
+        {
+          "name": "Update Store",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Downtown Store - Renovated\",\n  \"location\": \"456 Main St, City\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}"]
+            },
+            "description": "Updates an existing store. At least one field must be provided.\n\nOptional fields:\n- name (string, 1-100 chars, must be unique)\n- location (string, max 200 chars)\n- description (string, max 500 chars)"
+          }
+        },
+        {
+          "name": "Delete Store",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}"]
+            },
+            "description": "Deletes a store by ID. Also removes all store-product associations."
+          }
+        },
+        {
+          "name": "Get Store Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}", "summary"]
+            },
+            "description": "Returns store inventory summary with aggregated statistics: total products, total quantity, average price, total value, low stock items, and per-product breakdown. Non-trivial aggregation endpoint."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Store Products",
+      "item": [
+        {
+          "name": "Get Store Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}", "products"]
+            },
+            "description": "Returns all products associated with a store, including quantities."
+          }
+        },
+        {
+          "name": "Add Product to Store",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 1,\n  \"quantity\": 50\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}", "products"]
+            },
+            "description": "Associates a product with a store and sets initial quantity.\n\nRequired fields:\n- productId (positive integer)\n- quantity (non-negative integer)"
+          }
+        },
+        {
+          "name": "Update Product Quantity in Store",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 75\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}", "products", "{{productId}}"]
+            },
+            "description": "Updates the quantity of a product in a specific store.\n\nRequired fields:\n- quantity (non-negative integer)"
+          }
+        },
+        {
+          "name": "Remove Product from Store",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stores/{{storeId}}/products/{{productId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["stores", "{{storeId}}", "products", "{{productId}}"]
+            },
+            "description": "Removes a product from a store (deletes the store-product association)."
+          }
+        }
+      ]
+    }
+  ]
+}

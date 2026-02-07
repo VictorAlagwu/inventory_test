@@ -1,0 +1,17 @@
+node_modules
+dist
+generated
+coverage
+.nyc_output
+.env
+.env.test
+.env.local
+.env.*.local
+.DS_Store
+*.log
+*.swp
+*.swo
+*~
+.vscode
+.idea
+*code-workspace

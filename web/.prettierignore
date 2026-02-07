@@ -1,0 +1,5 @@
+build*
+artifacts/*
+coverage/*
+public/mockServiceWorker.js
+public/version.json

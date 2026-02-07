@@ -1,0 +1,61 @@
+export const storeProductsSeed = [
+  // Store 1
+  { storeIndex: 0, productIndex: 0, quantity: 45 },
+  { storeIndex: 0, productIndex: 1, quantity: 30 },
+  { storeIndex: 0, productIndex: 2, quantity: 12 },
+  { storeIndex: 0, productIndex: 10, quantity: 55 },
+  { storeIndex: 0, productIndex: 11, quantity: 20 },
+  { storeIndex: 0, productIndex: 20, quantity: 8 },
+  { storeIndex: 0, productIndex: 21, quantity: 35 },
+  { storeIndex: 0, productIndex: 30, quantity: 15 },
+  { storeIndex: 0, productIndex: 31, quantity: 40 },
+  { storeIndex: 0, productIndex: 40, quantity: 22 },
+
+  // Store 2
+  { storeIndex: 1, productIndex: 3, quantity: 60 },
+  { storeIndex: 1, productIndex: 4, quantity: 25 },
+  { storeIndex: 1, productIndex: 13, quantity: 18 },
+  { storeIndex: 1, productIndex: 14, quantity: 42 },
+  { storeIndex: 1, productIndex: 23, quantity: 7 },
+  { storeIndex: 1, productIndex: 24, quantity: 33 },
+  { storeIndex: 1, productIndex: 33, quantity: 50 },
+  { storeIndex: 1, productIndex: 34, quantity: 5 },
+  { storeIndex: 1, productIndex: 43, quantity: 28 },
+  { storeIndex: 1, productIndex: 44, quantity: 16 },
+
+  // Store 3
+  { storeIndex: 2, productIndex: 5, quantity: 38 },
+  { storeIndex: 2, productIndex: 6, quantity: 14 },
+  { storeIndex: 2, productIndex: 15, quantity: 52 },
+  { storeIndex: 2, productIndex: 16, quantity: 9 },
+  { storeIndex: 2, productIndex: 25, quantity: 27 },
+  { storeIndex: 2, productIndex: 26, quantity: 44 },
+  { storeIndex: 2, productIndex: 35, quantity: 11 },
+  { storeIndex: 2, productIndex: 36, quantity: 36 },
+  { storeIndex: 2, productIndex: 45, quantity: 19 },
+  { storeIndex: 2, productIndex: 46, quantity: 31 },
+
+  // Store 4
+  { storeIndex: 3, productIndex: 7, quantity: 48 },
+  { storeIndex: 3, productIndex: 8, quantity: 6 },
+  { storeIndex: 3, productIndex: 17, quantity: 23 },
+  { storeIndex: 3, productIndex: 18, quantity: 37 },
+  { storeIndex: 3, productIndex: 27, quantity: 15 },
+  { storeIndex: 3, productIndex: 28, quantity: 41 },
+  { storeIndex: 3, productIndex: 37, quantity: 8 },
+  { storeIndex: 3, productIndex: 38, quantity: 29 },
+  { storeIndex: 3, productIndex: 47, quantity: 53 },
+  { storeIndex: 3, productIndex: 48, quantity: 17 },
+
+  // Store 5
+  { storeIndex: 4, productIndex: 9, quantity: 34 },
+  { storeIndex: 4, productIndex: 19, quantity: 46 },
+  { storeIndex: 4, productIndex: 29, quantity: 12 },
+  { storeIndex: 4, productIndex: 39, quantity: 26 },
+  { storeIndex: 4, productIndex: 49, quantity: 39 },
+  { storeIndex: 4, productIndex: 0, quantity: 21 },
+  { storeIndex: 4, productIndex: 5, quantity: 43 },
+  { storeIndex: 4, productIndex: 15, quantity: 10 },
+  { storeIndex: 4, productIndex: 25, quantity: 32 },
+  { storeIndex: 4, productIndex: 35, quantity: 55 },
+];
