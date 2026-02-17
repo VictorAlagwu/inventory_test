@@ -26,27 +26,35 @@ import { EmptyState } from 'common/components/EmptyState';
 import { ConfirmDialog } from 'common/components/ConfirmDialog';
 import { useStoresQuery } from 'utils/queries/stores';
 import { useDeleteStoreMutation } from 'utils/queries/stores';
+import { useDebounce } from 'common/hooks/useDebounce';
 
 export const StoresListPage = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
+  const debouncedSearch = useDebounce(search, 500);
 
-  const { data, isLoading, isError, error, refetch } = useStoresQuery(search || undefined);
+  const { data, isLoading, isError, error, refetch } = useStoresQuery(debouncedSearch || undefined);
   const deleteMutation = useDeleteStoreMutation();
 
   const stores = data?.data ?? [];
 
   const handleDelete = () => {
-    if (deleteTarget === null) return;
+    if (deleteTarget === null) {
+      return;
+    }
     deleteMutation.mutate(deleteTarget, {
       onSuccess: () => setDeleteTarget(null),
     });
   };
 
   const renderContent = () => {
-    if (isLoading) return <LoadingState message="Loading stores..." />;
-    if (isError) return <ErrorState message={error?.message} onRetry={refetch} />;
+    if (isLoading) {
+      return <LoadingState message="Loading stores..." />;
+    }
+    if (isError) {
+      return <ErrorState message={error?.message} onRetry={refetch} />;
+    }
 
     if (stores.length === 0) {
       return (

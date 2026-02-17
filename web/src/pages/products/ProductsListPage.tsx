@@ -30,6 +30,7 @@ import { ConfirmDialog } from 'common/components/ConfirmDialog';
 import { useProductsQuery, useDeleteProductMutation } from 'utils/queries/products';
 import { useCategoriesQuery } from 'utils/queries/categories';
 import type { ProductsQueryParams } from 'common/types/product';
+import { useDebounce } from 'common/hooks/useDebounce';
 
 export const ProductsListPage = () => {
   const navigate = useNavigate();
@@ -39,13 +40,15 @@ export const ProductsListPage = () => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
+  const debouncedMinPrice = useDebounce(minPrice, 500);
+  const debouncedMaxPrice = useDebounce(maxPrice, 500);
 
   const params: ProductsQueryParams = {
     page: page + 1,
     limit: rowsPerPage,
     ...(categoryId && { categoryId: categoryId as number }),
-    ...(minPrice && { minPrice: parseFloat(minPrice) }),
-    ...(maxPrice && { maxPrice: parseFloat(maxPrice) }),
+    ...(debouncedMinPrice && { minPrice: parseFloat(debouncedMinPrice) }),
+    ...(debouncedMaxPrice && { maxPrice: parseFloat(debouncedMaxPrice) }),
   };
 
   const { data, isLoading, isError, error, refetch } = useProductsQuery(params);
@@ -58,15 +61,21 @@ export const ProductsListPage = () => {
   const pagination = data?.data?.pagination;
 
   const handleDelete = () => {
-    if (deleteTarget === null) return;
+    if (deleteTarget === null) {
+      return;
+    }
     deleteMutation.mutate(deleteTarget, {
       onSuccess: () => setDeleteTarget(null),
     });
   };
 
   const renderContent = () => {
-    if (isLoading) return <LoadingState message="Loading products..." />;
-    if (isError) return <ErrorState message={error?.message} onRetry={refetch} />;
+    if (isLoading) {
+      return <LoadingState message="Loading products..." />;
+    }
+    if (isError) {
+      return <ErrorState message={error?.message} onRetry={refetch} />;
+    }
 
     if (products.length === 0) {
       return (
@@ -151,7 +160,7 @@ export const ProductsListPage = () => {
       </div>
 
       <Paper variant="outlined" sx={{ p: 2, mb: 3 }}>
-        <div className="flex flex-wrap gap-3 items-end">
+        <div className="flex flex-wrap items-end gap-3">
           <FormControl size="small" sx={{ minWidth: 160 }}>
             <InputLabel>Category</InputLabel>
             <Select

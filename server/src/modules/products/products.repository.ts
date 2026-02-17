@@ -1,4 +1,5 @@
-import { PrismaClient } from '../../../generated/prisma';
+import { PrismaClient, Prisma } from '../../../generated/prisma';
+import type { Product, Category } from '../../../generated/prisma';
 import type {
   CreateProductDTO,
   UpdateProductDTO,
@@ -11,7 +12,7 @@ import type {
   UpdateStoreProductDTO,
 } from '@/modules/stores/stores.types';
 
-const SORT_FIELD_MAP: Record<string, string> = {
+const SORT_FIELD_MAP: Record<string, keyof Prisma.ProductOrderByWithRelationInput> = {
   name: 'name',
   price: 'price',
   categoryId: 'category_id',
@@ -24,8 +25,8 @@ export class ProductRepository {
   async findAll(
     filters?: ProductFilters,
     pagination?: PaginationParams
-  ): Promise<PaginatedResponse<any>> {
-    const where: any = {};
+  ): Promise<PaginatedResponse<Product & { category: Category }>> {
+    const where: Prisma.ProductWhereInput = {};
 
     if (filters?.categoryId) {
       where.category_id = filters.categoryId;
@@ -64,9 +65,10 @@ export class ProductRepository {
     const skip = (page - 1) * limit;
     const totalPages = Math.ceil(total / limit);
 
-    const orderBy: any = {};
     const sortField = SORT_FIELD_MAP[pagination?.sortBy || 'name'] || 'name';
-    orderBy[sortField] = pagination?.sortOrder || 'asc';
+    const orderBy: Prisma.ProductOrderByWithRelationInput = {
+      [sortField]: pagination?.sortOrder || 'asc',
+    };
 
     const products = await this.prisma.product.findMany({
       where,
